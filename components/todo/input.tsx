@@ -34,14 +34,14 @@ export default function ToDoInput() {
             <Input
                 ref={titleRef}
                 placeholder="Escribe el título de la tarea"
-                className="bg-transparent dark:bg-transparent font-caveat text-2xl px-0 border-none"
+                className="bg-transparent dark:bg-transparent font-caveat text-2xl md:text-2xl px-0 border-none"
                 autoFocus
                 maxLength={50}
                 value={newTodo.title}
                 onChange={(e) => setNewTodo((prev) => ({ ...prev, title: e.target.value }))}
             />
             <Textarea
-                className="font-caveat max-h-18 md:max-h-40 text-lg md:text-xl resize-none border-none px-0"
+                className="font-caveat max-h-18 md:max-h-40 text-lg md:text-lg resize-none border-none px-0"
                 placeholder="Escribe la descripción de la tarea y presiona Ctrl+Enter o haz clic en Agregar.."
                 rows={9}
                 maxLength={120}
