@@ -1,7 +1,8 @@
 # TODO App | Next.js + Tailwind CSS + TypeScript
 
 Este es un proyecto de ejemplo de una aplicación TODO utilizando Next.js, Tailwind CSS y TypeScript.
-![image](https://github.com/user-attachments/assets/179c69eb-8393-4045-9a79-f5584444a141)
+![image](https://github.com/user-attachments/assets/c523e290-6a76-423a-ba4f-6db2609547d4)
+
 
 ## Getting Started
 
