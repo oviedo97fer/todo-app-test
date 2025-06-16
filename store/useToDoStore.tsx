@@ -6,7 +6,7 @@ export interface ToDoState {
     todos: ToDoNote[];
     setTodos: (todos: ToDoNote[]) => void;
     addTodo: (todo: ToDoNote) => void;
-    addNewTodo: (newTodo: string) => void;
+    addNewTodo: (newTodo: { title: string; description: string }) => void;
     toggleTodo: (id: string) => void;
     deleteTodo: (id: string) => void;
     clearAllTodos: () => void;
@@ -21,15 +21,18 @@ export const useToDoStore = create<ToDoState>()(
             addNewTodo: (newTodo) => {
                 const todo: ToDoNote = {
                     id: Date.now().toString(),
-                    text: newTodo.trim(),
-                    completed: false,
+                    title: newTodo.title.trim(),
+                    description: newTodo.description.trim(),
+                    isComplete: false,
                     createdAt: new Date()
                 };
                 set({ todos: [...get().todos, todo] });
             },
             toggleTodo: (id: string) =>
                 set({
-                    todos: get().todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+                    todos: get().todos.map((todo) =>
+                        todo.id === id ? { ...todo, isComplete: !todo.isComplete } : todo
+                    )
                 }),
             addTodo: (todo) => set({ todos: [...get().todos, todo] }),
             deleteTodo: (id: string) => set({ todos: get().todos.filter((todo) => todo.id !== id) }),

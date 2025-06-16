@@ -10,7 +10,7 @@ function ToDoStats() {
     }, [todos]);
 
     const completedCount = useMemo(() => {
-        return todos.filter((todo) => todo.completed).length;
+        return todos.filter((todo) => todo.isComplete).length;
     }, [todos]);
 
     return (

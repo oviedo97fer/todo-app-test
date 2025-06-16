@@ -7,26 +7,36 @@ import { cn } from "@/lib/utils";
 import { useToDoStore } from "@/store/useToDoStore";
 
 function TodoCard(props: ToDoNote) {
-    const { id, completed, createdAt, text } = props;
+    const { id, description, isComplete, createdAt, title } = props;
     const { deleteTodo, toggleTodo } = useToDoStore();
 
     return (
-        <TodoCardContainer className={cn(completed && "opacity-50")}>
+        <TodoCardContainer className={cn(isComplete && "opacity-50")}>
             <div className="flex flex-row gap-2 items-center">
                 <Checkbox
                     id={`todo-${id}`}
-                    checked={completed}
+                    checked={isComplete}
                     onCheckedChange={() => toggleTodo(id)}
-                    className="w-5 h-5"
+                    className="w-5 h-5 mt-2 self-start"
                 />
-                <p
-                    className={cn(
-                        "flex-1 font-caveat text-2xl text-primary-foreground break-all",
-                        completed && "line-through"
-                    )}
-                >
-                    {text}
-                </p>
+                <div className="flex-1">
+                    <p
+                        className={cn(
+                            "flex-1 font-caveat text-2xl mb-1 font-semibold text-primary-foreground break-all",
+                            isComplete && "line-through"
+                        )}
+                    >
+                        {title}
+                    </p>
+                    <p
+                        className={cn(
+                            "flex-1 font-caveat text-xl text-primary-foreground break-all leading-5",
+                            isComplete && "line-through"
+                        )}
+                    >
+                        {description}
+                    </p>
+                </div>
                 <Button variant="ghost" className="self-start" size="sm" onClick={() => deleteTodo(id)}>
                     <Trash2 className="w-4 h-4" />
                 </Button>

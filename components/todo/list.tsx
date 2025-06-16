@@ -16,9 +16,9 @@ export default function ToDoList() {
             case FilterToDo.all:
                 return todos;
             case FilterToDo.completed:
-                return todos.filter((todo) => todo.completed);
+                return todos.filter((todo) => todo.isComplete);
             case FilterToDo.pending:
-                return todos.filter((todo) => !todo.completed);
+                return todos.filter((todo) => !todo.isComplete);
             default:
                 return [];
         }

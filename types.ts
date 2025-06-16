@@ -1,8 +1,9 @@
 export interface ToDoNote {
     id: string;
-    text: string;
-    completed: boolean;
+    title: string;
+    isComplete: boolean;
     createdAt: Date;
+    description: string;
 }
 
 export enum FilterToDo {
