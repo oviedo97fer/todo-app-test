@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { memo } from "react";
 import { Button } from "../ui/button";
 import { Trash2 } from "lucide-react";
 import { Checkbox } from "../ui/checkbox";
@@ -7,90 +7,49 @@ import { cn } from "@/lib/utils";
 import { useToDoStore } from "@/store/useToDoStore";
 
 function TodoCard(props: ToDoNote) {
-    const { id, completed, text } = props;
-    const { deleteTodo } = useToDoStore();
-    const [isHovered, setIsHovered] = useState<boolean>(false);
-
-    const handleMouseEnter = useCallback((): void => {
-        setIsHovered(true);
-    }, []);
-
-    const handleMouseLeave = useCallback((): void => {
-        setIsHovered(false);
-    }, []);
+    const { id, completed, createdAt, text } = props;
+    const { deleteTodo, toggleTodo } = useToDoStore();
 
     return (
-        <TodoCardContainer>
-            <div
-                className="flex flex-row gap-2 items-center"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
+        <TodoCardContainer className={cn(completed && "opacity-50")}>
+            <div className="flex flex-row gap-2 items-center">
                 <Checkbox
                     id={`todo-${id}`}
                     checked={completed}
-                    // onCheckedChange={() => toggleTodo(todo.id)}
+                    onCheckedChange={() => toggleTodo(id)}
                     className="w-5 h-5"
                 />
-                <p className="flex-1 font-caveat text-2xl text-primary-foreground">{text}</p>
-
-                {isHovered && (
-                    <Button variant="ghost" size="sm" onClick={() => deleteTodo(id)}>
-                        <Trash2 className="w-4 h-4" />
-                    </Button>
-                )}
-            </div>
-        </TodoCardContainer>
-    );
-    return (
-        <div
-            className={`shadow-md transition-all duration-200 hover:shadow-lg ${
-                completed ? "bg-gray-50 border-gray-200" : "bg-white"
-            }`}
-        >
-            <div className="flex items-center gap-3">
-                <Checkbox
-                    id={`todo-${id}`}
-                    checked={completed}
-                    // onCheckedChange={() => toggleTodo(todo.id)}
-                    className="w-5 h-5"
-                />
-                <div className="flex-1 min-w-0">
-                    <label
-                        htmlFor={`todo-${id}`}
-                        className={`block text-sm font-medium cursor-pointer ${
-                            completed ? "text-gray-500 line-through" : "text-gray-900"
-                        }`}
-                    >
-                        {text}
-                    </label>
-                    <div className="flex items-center gap-2 mt-1">
-                        <span className="text-xs text-gray-400">
-                            {/*  {todo.createdAt.toLocaleDateString("es-ES", {
-                                day: "numeric",
-                                month: "short",
-                                hour: "2-digit",
-                                minute: "2-digit"
-                            })} */}
-                        </span>
-                    </div>
-                </div>
-                <Button
-                    variant="ghost"
-                    size="sm"
-                    // onClick={() => deleteTodo(todo.id)}
-                    className="text-red-500 hover:text-red-700 hover:bg-red-50"
+                <p
+                    className={cn(
+                        "flex-1 font-caveat text-2xl text-primary-foreground break-all",
+                        completed && "line-through"
+                    )}
                 >
+                    {text}
+                </p>
+                <Button variant="ghost" className="self-start" size="sm" onClick={() => deleteTodo(id)}>
                     <Trash2 className="w-4 h-4" />
                 </Button>
             </div>
-        </div>
+            <div>
+                <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-background">
+                        {new Date(createdAt).toLocaleDateString("es-ES", {
+                            day: "numeric",
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit"
+                        })}
+                    </span>
+                </div>
+            </div>
+        </TodoCardContainer>
     );
 }
 
-function TodoCardContainer({ children }: { children: React.ReactNode }) {
+function TodoCardContainer({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
-        <div className="relative h-fit w-full">
+        <div className="relative h-fit px-2">
             <div
                 className={cn(
                     `
@@ -101,7 +60,8 @@ function TodoCardContainer({ children }: { children: React.ReactNode }) {
 						rounded-xl
                         rounded-tr-[58px]
 						h-fit w-full
-                        `
+                        `,
+                    className
                 )}
             >
                 <div
@@ -138,4 +98,4 @@ function TodoCardContainer({ children }: { children: React.ReactNode }) {
         </div>
     );
 }
-export default TodoCard;
+export default memo(TodoCard);
