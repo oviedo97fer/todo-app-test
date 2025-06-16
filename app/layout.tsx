@@ -38,8 +38,9 @@ export default function RootLayout({
                 </head>
                 <body className={`${geistSans.variable} ${geistMono.variable} ${caveat.variable} antialiased`}>
                     <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-                        <div className="min-h-screen bg-background py-4 px-4">
+                        <div className="min-h-screen w-screen h-screen bg-background py-4 px-4">
                             <HeaderApp />
+                            {/* Content */}
                             <div className="max-w-4xl mx-auto">{children}</div>
                         </div>
                     </ThemeProvider>
