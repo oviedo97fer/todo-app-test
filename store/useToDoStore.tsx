@@ -1,23 +1,42 @@
-import { ToDoNote } from "@/types";
+import { FilterToDo, ToDoNote } from "@/types";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 export interface ToDoState {
     todos: ToDoNote[];
     setTodos: (todos: ToDoNote[]) => void;
+    addTodo: (todo: ToDoNote) => void;
+    addNewTodo: (newTodo: string) => void;
+    toggleTodo: (id: string) => void;
     deleteTodo: (id: string) => void;
-    newTodo: string;
-    setNewTodo: (newTodo: string) => void;
+    clearAllTodos: () => void;
+    filter: FilterToDo;
+    setFilter: (filter: FilterToDo) => void;
 }
 
 export const useToDoStore = create<ToDoState>()(
     persist(
         (set, get) => ({
             todos: [],
-            newTodo: "",
+            addNewTodo: (newTodo) => {
+                const todo: ToDoNote = {
+                    id: Date.now().toString(),
+                    text: newTodo.trim(),
+                    completed: false,
+                    createdAt: new Date()
+                };
+                set({ todos: [...get().todos, todo] });
+            },
+            toggleTodo: (id: string) =>
+                set({
+                    todos: get().todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+                }),
+            addTodo: (todo) => set({ todos: [...get().todos, todo] }),
             deleteTodo: (id: string) => set({ todos: get().todos.filter((todo) => todo.id !== id) }),
             setTodos: (todos) => set({ todos }),
-            setNewTodo: (newTodo) => set({ newTodo })
+            clearAllTodos: () => set({ todos: [] }),
+            filter: FilterToDo.all,
+            setFilter: (filter: FilterToDo) => set({ filter })
         }),
         {
             name: "todos-storage",
